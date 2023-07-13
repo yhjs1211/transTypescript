@@ -1,7 +1,5 @@
-# Awesome Project Build with TypeORM
+# ERD
 
-Steps to run this project:
+![image](https://github.com/yhjs1211/transTypescript/assets/122883378/23a9f2ad-745b-461a-b370-75e736565a85)
 
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+# API Reference
