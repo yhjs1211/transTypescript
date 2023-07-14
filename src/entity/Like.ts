@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { LikeWhat } from './LikeWhat';
 import { User } from './User';
 import { Post } from './Post';
@@ -7,24 +7,15 @@ import { Comment } from './Comment';
 
 @Entity({name:'likes'})
 export class Like{
-    @PrimaryGeneratedColumn()
-    id!:number
 
-    @Column({type:'enum',nullable:false,enum:LikeWhat})
-    type!:LikeWhat
-
-    @Column()
-    contentId!:number
-
-    @Column({nullable:true})
+    @PrimaryColumn()
+    @OneToOne(()=>User,{onUpdate:'CASCADE',onDelete:'CASCADE'})
+    @JoinColumn({referencedColumnName:'id',name:'userId',foreignKeyConstraintName:'fk_user_id'})
     userId!:number
 
-    @ManyToOne(()=>User, (user)=> user.userToLike,{cascade:true})
-    user!: User
+    @OneToMany(()=>Post,post=>post.toLike)
+    likePosts!:Post[]
 
-    @ManyToOne(()=>Post, (post)=>post.postToLike,{cascade:true})
-    post!: Post
-
-    @ManyToOne(()=>Comment, (comment)=>comment.commentToLike,{cascade:true})
-    comment!: Comment
+    @OneToMany(()=>Comment,comment=>comment.toLike)
+    likeComments!:Comment[]
 }

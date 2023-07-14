@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany } from "typeorm"
 import { Post } from "./Post"
 import { Like } from "./Like"
+import { Comment } from "./Comment"
 
 
 @Entity()
@@ -21,6 +22,9 @@ export class User {
     @Column()
     password!: string
 
-    @OneToMany(()=>Like,like => like.userId)
-    userToLike!:number
+    @OneToMany(()=>Post, post => post.user,{cascade:true})
+    wrotePosts!:Post[]
+
+    @OneToMany(()=>Comment, comment => comment.user,{cascade:true})
+    wroteComments!:Comment[]
 }

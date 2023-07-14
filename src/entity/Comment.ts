@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Like } from './Like';
+import { User } from './User';
 
 @Entity({name:'comments'})
 export class Comment{
@@ -9,6 +10,10 @@ export class Comment{
     @Column({type:'text'})
     comment!:string
 
-    @OneToMany(()=>Like, (like)=>like.comment)
-    commentToLike!:number
+    @ManyToOne(()=>User,user=>user.wroteComments)
+    user!:User
+
+    @ManyToOne(()=>Like,like=>like.likeComments,{lazy:true,onDelete:'CASCADE'})
+    @JoinColumn({referencedColumnName:'userId',name:'toLike',foreignKeyConstraintName:'fk_likes_userId'})
+    toLike!:Like
 }
